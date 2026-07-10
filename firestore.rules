@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function dg5User() {
+      return signedIn() && request.auth.token.email.matches('.*@dg5\\.com\\.br$');
+    }
+
+    function owner() {
+      return dg5User() && request.auth.token.email == 'patricia@dg5.com.br';
+    }
+
+    function role() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function admin() {
+      return owner() || (dg5User() && role() == 'admin');
+    }
+
+    match /users/{userId} {
+      allow read: if dg5User();
+      allow create: if dg5User() && request.auth.uid == userId
+        && (request.resource.data.role == 'operator' || owner());
+      allow update: if admin() || (dg5User() && request.auth.uid == userId
+        && request.resource.data.role == resource.data.role);
+      allow delete: if admin();
+    }
+
+    match /aiGateway/{document=**} {
+      allow read, write: if admin();
+    }
+
+    match /aiLogs/{document=**} {
+      allow read: if admin();
+      allow write: if false;
+    }
+
+    match /{collection}/{document=**} {
+      allow read, write: if dg5User() && collection in [
+        'clients', 'brandBrains', 'onboardings', 'plans', 'plannedContents',
+        'contents', 'creativeReviews', 'approvals', 'feedbacks',
+        'learningCandidates', 'notifications', 'clientFiles'
+      ];
+    }
+  }
+}

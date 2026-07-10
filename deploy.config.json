@@ -1,0 +1,8 @@
+{
+  "target": "firebase",
+  "deployStrategy": "firebase-hosting-functions",
+  "gcpProject": "dg5-content-intelligence",
+  "region": "southamerica-east1",
+  "hostingSite": "dg5-content-intelligence",
+  "buildCommand": "pnpm build"
+}

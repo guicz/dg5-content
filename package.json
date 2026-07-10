@@ -1,0 +1,30 @@
+{
+  "name": "dg5-content-intelligence",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host localhost --port 5177",
+    "build": "vite build",
+    "preview": "vite preview --host localhost --port 5177",
+    "test": "node --test tests/*.test.mjs",
+    "firebase": "firebase",
+    "emulators": "firebase emulators:start --project demo-dg5",
+    "deploy": "firebase deploy"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "latest",
+    "firebase": "latest",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "firebase-tools": "latest",
+    "vite": "latest"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

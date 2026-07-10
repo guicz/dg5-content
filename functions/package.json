@@ -1,0 +1,17 @@
+{
+  "name": "dg5-content-intelligence-functions",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "latest",
+    "firebase-admin": "latest",
+    "firebase-functions": "latest"
+  }
+}

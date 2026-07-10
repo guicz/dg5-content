@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.production
+.env.production.local
+.env.*.local
+*.key.json
+service-account*.json
+.firebase/
+firebase-debug.log
+*-debug.log
+functions/node_modules/
+functions/.secret.local
+.tools/
+.runtime/

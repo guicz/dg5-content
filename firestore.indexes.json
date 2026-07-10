@@ -1,0 +1,14 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "plannedContents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "requiresMetaScheduling", "order": "ASCENDING" },
+        { "fieldPath": "metaScheduled", "order": "ASCENDING" },
+        { "fieldPath": "publishDate", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
