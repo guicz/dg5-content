@@ -58,10 +58,10 @@ function keyFor(provider) {
 
 async function chooseModel(task, clientId, config) {
   const mappings = {
-    generation: [config.textGenerationProvider || "openai", config.textGenerationModel || "gpt-5-mini"],
-    review: [config.reviewProvider || "anthropic", config.reviewModel || "claude-sonnet-5"],
-    vision: [config.visionProvider || "gemini", config.visionModel || "gemini-2.5-flash"],
-    brand: [config.brandProvider || "gemini", config.brandModel || "gemini-2.5-flash"],
+    generation: [config.textGenerationProvider || "openai", config.textGenerationModel || "gpt-5-nano"],
+    review: [config.reviewProvider || "openai", config.reviewModel || "gpt-5-nano"],
+    vision: [config.visionProvider || "gemini", config.visionModel || "gemini-3.1-flash-lite"],
+    brand: [config.brandProvider || "gemini", config.brandModel || "gemini-3.1-flash-lite"],
   };
   const performance = await db.collection("modelPerformance")
     .where("clientId", "==", clientId)
@@ -91,10 +91,12 @@ async function callOpenAI({ model, system, prompt, image }) {
     : prompt;
   const body = {
     model,
+    max_completion_tokens: 2200,
     response_format: { type: "json_object" },
     messages: [{ role: "system", content: system }, { role: "user", content }],
   };
-  if (!model.startsWith("gpt-5")) body.temperature = 0.3;
+  if (model.startsWith("gpt-5")) body.reasoning_effort = "minimal";
+  else body.temperature = 0.3;
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${openAIKey.value()}` },
@@ -122,10 +124,12 @@ async function callGemini({ model, system, prompt, image, documents = [] }) {
   const parts = [{ text: `${system}\n\n${prompt}` }];
   if (image) parts.push({ inlineData: { mimeType: image.mimeType, data: image.data } });
   for (const document of documents) parts.push({ inlineData: { mimeType: document.mimeType, data: document.data } });
+  const generationConfig = { temperature: 0.3, responseMimeType: "application/json", maxOutputTokens: 2200 };
+  if (model === "gemini-3.1-flash-lite") generationConfig.thinkingConfig = { thinkingLevel: "minimal" };
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(geminiKey.value())}`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ contents: [{ role: "user", parts }], generationConfig: { temperature: 0.3, responseMimeType: "application/json" } }),
+    body: JSON.stringify({ contents: [{ role: "user", parts }], generationConfig }),
   });
   if (!response.ok) throw new Error(`Gemini ${response.status}: ${await response.text()}`);
   const payload = await response.json();
@@ -179,7 +183,7 @@ export const generateContent = onCall({ region, secrets: aiSecrets, timeoutSecon
   if (fit.score < 70 && config.routingMode === "adaptive") {
     const alternatives = ["openai", "anthropic", "gemini"].filter((provider) => provider !== choice.provider && secretReady(keyFor(provider)));
     if (alternatives[0]) {
-      const retryChoice = { provider: alternatives[0], model: alternatives[0] === "openai" ? "gpt-5-mini" : alternatives[0] === "anthropic" ? "claude-sonnet-5" : "gemini-2.5-flash" };
+      const retryChoice = { provider: alternatives[0], model: alternatives[0] === "openai" ? "gpt-5-nano" : alternatives[0] === "anthropic" ? "claude-haiku-4-5" : "gemini-3.1-flash-lite" };
       const retry = await callModel({ ...retryChoice, system, prompt: `${prompt}\nA primeira versão teve baixa aderência. Priorize o tom e as restrições do Brand Brain.` });
       if (retry.mode === "live") {
         result = parseModelJson(retry.text, fallback);

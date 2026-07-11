@@ -7,13 +7,13 @@ import { saveRecord } from "../lib/data";
 
 const defaults = {
   textGenerationProvider: "openai",
-  textGenerationModel: "gpt-5-mini",
-  reviewProvider: "anthropic",
-  reviewModel: "claude-sonnet-5",
+  textGenerationModel: "gpt-5-nano",
+  reviewProvider: "openai",
+  reviewModel: "gpt-5-nano",
   visionProvider: "gemini",
-  visionModel: "gemini-2.5-flash",
+  visionModel: "gemini-3.1-flash-lite",
   brandProvider: "gemini",
-  brandModel: "gemini-2.5-flash",
+  brandModel: "gemini-3.1-flash-lite",
   routingMode: "adaptive",
 };
 

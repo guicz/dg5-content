@@ -21,16 +21,30 @@ MVP interno da DG5 para organizar conhecimento de clientes, Brand Brain, planeja
 - Região do Firestore: `southamerica-east1`
 - Ativos no ambiente remoto: Hosting, Authentication com Google, Firestore, Storage, regras, índices, cinco Cloud Functions, Secret Manager e Scheduler diário.
 - Funções em produção: `generateContent`, `reviewContent`, `generateBrandBrain`, `reviewCreative` e `checkMetaScheduling`.
-- Pendentes: chaves reais da OpenAI, Anthropic e Gemini, além do serviço que consumirá a coleção `mail`.
+- OpenAI e Gemini configurados com segredos reais no backend.
+- Pendentes: chave da Anthropic e serviço que consumirá a coleção `mail`.
 
-O backend está operacional. Enquanto os segredos mantiverem o valor seguro `not-configured`, os agentes usam o fallback determinístico identificado no sistema e não fazem chamadas pagas aos provedores de IA.
+O backend está operacional. Para qualquer provedor ainda sem chave, os agentes usam o fallback determinístico identificado no sistema e não fazem chamadas pagas.
 
 ### Padrões do AI Gateway
 
-- Geração textual: OpenAI `gpt-5-mini`.
-- Revisão de conteúdo: Anthropic `claude-sonnet-5`.
-- Brand Brain e revisão visual: Google `gemini-2.5-flash`.
+- Geração e revisão textual em testes: OpenAI `gpt-5-nano`.
+- Brand Brain e revisão visual em testes: Google `gemini-3.1-flash-lite`.
+- Alternativa Anthropic quando configurada: `claude-haiku-4-5`.
 - Roteamento: adaptativo por tarefa, cliente e desempenho histórico.
+- Controles de teste: raciocínio mínimo e limite de 2.200 tokens de saída por chamada.
+
+### Estimativa direta de IA em 10/07/2026
+
+Premissas: OpenAI `gpt-5-nano` a US$ 0,05/1 milhão de tokens de entrada e US$ 0,40/1 milhão de saída; Gemini `gemini-3.1-flash-lite` a US$ 0,25/1 milhão de entrada e US$ 1,50/1 milhão de saída.
+
+- Geração textual com 5.000 tokens de entrada e 1.500 de saída: cerca de US$ 0,00085.
+- Revisão textual com 3.000 tokens de entrada e 800 de saída: cerca de US$ 0,00047.
+- Revisão visual com 5.000 tokens de entrada e 1.000 de saída: cerca de US$ 0,00275.
+- Ciclo completo de um conteúdo: cerca de US$ 0,00407; 100 ciclos: US$ 0,407, aproximadamente R$ 2,24 com câmbio assumido de R$ 5,50.
+- Brand Brain inicial com 30.000 tokens de entrada e 2.000 de saída: cerca de US$ 0,01050 por cliente.
+
+Valores aproximados, sem Firebase, Storage, e-mail, impostos ou variação de tokens de imagens/documentos. Referências: [OpenAI](https://developers.openai.com/api/docs/models/gpt-5-nano) e [Gemini](https://ai.google.dev/gemini-api/docs/gemini-3).
 
 ## Rodar localmente
 
@@ -47,12 +61,10 @@ pnpm install
 
 ## Ativar IA e envio de e-mail
 
-1. Substituir os valores de fallback pelos segredos reais necessários:
+1. OpenAI e Gemini já estão ativos. Para incluir Claude no roteamento, configurar o segredo restante:
 
 ```powershell
-firebase functions:secrets:set OPENAI_API_KEY
 firebase functions:secrets:set ANTHROPIC_API_KEY
-firebase functions:secrets:set GEMINI_API_KEY
 ```
 
 2. Reimplantar as Functions para vincular as novas versões dos segredos.
