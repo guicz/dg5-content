@@ -58,8 +58,8 @@ function keyFor(provider) {
 
 async function chooseModel(task, clientId, config) {
   const mappings = {
-    generation: [config.textGenerationProvider || "openai", config.textGenerationModel || "gpt-4.1-mini"],
-    review: [config.reviewProvider || "anthropic", config.reviewModel || "claude-sonnet-4-5"],
+    generation: [config.textGenerationProvider || "openai", config.textGenerationModel || "gpt-5-mini"],
+    review: [config.reviewProvider || "anthropic", config.reviewModel || "claude-sonnet-5"],
     vision: [config.visionProvider || "gemini", config.visionModel || "gemini-2.5-flash"],
     brand: [config.brandProvider || "gemini", config.brandModel || "gemini-2.5-flash"],
   };
@@ -89,10 +89,16 @@ async function callOpenAI({ model, system, prompt, image }) {
   const content = image
     ? [{ type: "text", text: prompt }, { type: "image_url", image_url: { url: `data:${image.mimeType};base64,${image.data}` } }]
     : prompt;
+  const body = {
+    model,
+    response_format: { type: "json_object" },
+    messages: [{ role: "system", content: system }, { role: "user", content }],
+  };
+  if (!model.startsWith("gpt-5")) body.temperature = 0.3;
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${openAIKey.value()}` },
-    body: JSON.stringify({ model, temperature: 0.3, response_format: { type: "json_object" }, messages: [{ role: "system", content: system }, { role: "user", content }] }),
+    body: JSON.stringify(body),
   });
   if (!response.ok) throw new Error(`OpenAI ${response.status}: ${await response.text()}`);
   return textFromOpenAI(await response.json());
@@ -173,7 +179,7 @@ export const generateContent = onCall({ region, secrets: aiSecrets, timeoutSecon
   if (fit.score < 70 && config.routingMode === "adaptive") {
     const alternatives = ["openai", "anthropic", "gemini"].filter((provider) => provider !== choice.provider && secretReady(keyFor(provider)));
     if (alternatives[0]) {
-      const retryChoice = { provider: alternatives[0], model: alternatives[0] === "openai" ? "gpt-4.1-mini" : alternatives[0] === "anthropic" ? "claude-sonnet-4-5" : "gemini-2.5-flash" };
+      const retryChoice = { provider: alternatives[0], model: alternatives[0] === "openai" ? "gpt-5-mini" : alternatives[0] === "anthropic" ? "claude-sonnet-5" : "gemini-2.5-flash" };
       const retry = await callModel({ ...retryChoice, system, prompt: `${prompt}\nA primeira versão teve baixa aderência. Priorize o tom e as restrições do Brand Brain.` });
       if (retry.mode === "live") {
         result = parseModelJson(retry.text, fallback);

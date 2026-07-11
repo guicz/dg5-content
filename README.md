@@ -25,6 +25,13 @@ MVP interno da DG5 para organizar conhecimento de clientes, Brand Brain, planeja
 
 O backend está operacional. Enquanto os segredos mantiverem o valor seguro `not-configured`, os agentes usam o fallback determinístico identificado no sistema e não fazem chamadas pagas aos provedores de IA.
 
+### Padrões do AI Gateway
+
+- Geração textual: OpenAI `gpt-5-mini`.
+- Revisão de conteúdo: Anthropic `claude-sonnet-5`.
+- Brand Brain e revisão visual: Google `gemini-2.5-flash`.
+- Roteamento: adaptativo por tarefa, cliente e desempenho histórico.
+
 ## Rodar localmente
 
 Pré-requisitos: Node 22, pnpm e Java 21. Nesta máquina, o Java 21 portátil está em `.tools/` e não altera a instalação do Windows.

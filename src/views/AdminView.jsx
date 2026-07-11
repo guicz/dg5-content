@@ -7,11 +7,13 @@ import { saveRecord } from "../lib/data";
 
 const defaults = {
   textGenerationProvider: "openai",
-  textGenerationModel: "gpt-4.1-mini",
+  textGenerationModel: "gpt-5-mini",
   reviewProvider: "anthropic",
-  reviewModel: "claude-sonnet-4-5",
+  reviewModel: "claude-sonnet-5",
   visionProvider: "gemini",
   visionModel: "gemini-2.5-flash",
+  brandProvider: "gemini",
+  brandModel: "gemini-2.5-flash",
   routingMode: "adaptive",
 };
 
@@ -46,6 +48,7 @@ export default function AdminView({ notify }) {
           <header className="surface__header"><div className="heading-with-icon"><span><Bot size={20} /></span><div><p className="eyebrow">AI Gateway</p><h2>Roteamento por tarefa</h2></div></div><Badge tone="success">Ativo</Badge></header>
           <div className="gateway-row"><div><strong>Geração textual</strong><small>Legendas, roteiros, pautas e variações</small></div><Field label="Provedor"><select value={config.textGenerationProvider} onChange={(event) => update("textGenerationProvider", event.target.value)}><option value="openai">OpenAI</option><option value="anthropic">Claude</option><option value="gemini">Gemini</option></select></Field><Field label="Modelo"><input value={config.textGenerationModel} onChange={(event) => update("textGenerationModel", event.target.value)} /></Field></div>
           <div className="gateway-row"><div><strong>Revisão de conteúdo</strong><small>Aderência, clareza e restrições do Brand Brain</small></div><Field label="Provedor"><select value={config.reviewProvider} onChange={(event) => update("reviewProvider", event.target.value)}><option value="openai">OpenAI</option><option value="anthropic">Claude</option><option value="gemini">Gemini</option></select></Field><Field label="Modelo"><input value={config.reviewModel} onChange={(event) => update("reviewModel", event.target.value)} /></Field></div>
+          <div className="gateway-row"><div><strong>Brand Brain</strong><small>Consolidação de documentos, histórico e guia da marca</small></div><Field label="Provedor"><select value={config.brandProvider} onChange={(event) => update("brandProvider", event.target.value)}><option value="openai">OpenAI</option><option value="anthropic">Claude</option><option value="gemini">Gemini</option></select></Field><Field label="Modelo"><input value={config.brandModel} onChange={(event) => update("brandModel", event.target.value)} /></Field></div>
           <div className="gateway-row"><div><strong>Direção de arte</strong><small>Análise visual do criativo e do conjunto final</small></div><Field label="Provedor"><select value={config.visionProvider} onChange={(event) => update("visionProvider", event.target.value)}><option value="openai">OpenAI</option><option value="anthropic">Claude</option><option value="gemini">Gemini</option></select></Field><Field label="Modelo"><input value={config.visionModel} onChange={(event) => update("visionModel", event.target.value)} /></Field></div>
         </section>
 
