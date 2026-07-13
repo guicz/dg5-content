@@ -1,0 +1,184 @@
+{
+  "users": [
+    {
+      "id": "firebase-auth-uid-example",
+      "name": "Pessoa Operadora",
+      "email": "operador@example.invalid",
+      "photoURL": "",
+      "role": "operator",
+      "updatedAt": "2026-07-13T12:00:00.000Z"
+    }
+  ],
+  "clients": [
+    {
+      "id": "cliente-exemplo",
+      "name": "Cliente Exemplo",
+      "segment": "Servicos",
+      "status": "Ativo",
+      "channels": ["Instagram", "LinkedIn"],
+      "responsibleName": "Pessoa Operadora",
+      "responsibleEmail": "operador@example.invalid",
+      "notes": "Comunicacao objetiva, consultiva e baseada em informacoes validadas.",
+      "brandHealth": 82
+    }
+  ],
+  "clientFiles": [
+    {
+      "id": "arquivo-exemplo",
+      "clientId": "cliente-exemplo",
+      "contentId": null,
+      "name": "manual-de-marca-exemplo.pdf",
+      "type": "application/pdf",
+      "size": 245760,
+      "kind": "knowledge",
+      "storagePath": "clients/cliente-exemplo/knowledge/uuid-manual-de-marca-exemplo.pdf",
+      "downloadURL": "https://example.invalid/arquivo",
+      "createdAt": "2026-07-13T12:05:00.000Z"
+    }
+  ],
+  "brandBrains": [
+    {
+      "id": "cliente-exemplo",
+      "clientId": "cliente-exemplo",
+      "status": "Aprovado",
+      "version": 2,
+      "tone": "Claro, consultivo e direto.",
+      "positioning": "Parceira estrategica para decisoes mais seguras.",
+      "audience": "Gestores e profissionais responsaveis pela contratacao.",
+      "preferences": "Exemplos praticos e chamadas objetivas.",
+      "restrictions": "Evitar promessas absolutas e dados sem fonte.",
+      "bannedWords": "garantia,milagroso",
+      "qualityCriteria": "Clareza, utilidade e consistencia de marca.",
+      "strategicSummary": "A marca traduz conhecimento especializado em orientacao pratica.",
+      "learnings": "Conteudos com exemplos concretos recebem melhor retorno."
+    }
+  ],
+  "plannedContents": [
+    {
+      "id": "conteudo-planejado-exemplo",
+      "clientId": "cliente-exemplo",
+      "title": "Tema editorial de exemplo",
+      "channel": "Instagram",
+      "format": "Carrossel",
+      "objective": "Gerar autoridade",
+      "publishDate": "2026-08-10",
+      "priority": "Normal",
+      "status": "Briefing",
+      "responsibleName": "Pessoa Operadora",
+      "responsibleEmail": "operador@example.invalid",
+      "campaign": "Campanha Exemplo",
+      "editorialLine": "Educacao",
+      "requiresMetaScheduling": true,
+      "metaScheduled": false
+    }
+  ],
+  "contents": [
+    {
+      "id": "conteudo-planejado-exemplo",
+      "clientId": "cliente-exemplo",
+      "plannedContentId": "conteudo-planejado-exemplo",
+      "title": "Tema editorial de exemplo",
+      "channel": "Instagram",
+      "format": "Carrossel",
+      "text": "Texto demonstrativo sem informacoes de cliente real.",
+      "artSuggestion": "Carrossel com hierarquia clara, imagem real e uma ideia principal por tela.",
+      "status": "Aguardando aprovacao operacional",
+      "origin": "IA",
+      "model": "gpt-5-nano",
+      "fitScoreInternal": 82,
+      "fitState": "Aderente",
+      "guidance": ["Realizar leitura final de ritmo e clareza."]
+    }
+  ],
+  "creativeReviews": [
+    {
+      "id": "conteudo-planejado-exemplo",
+      "clientId": "cliente-exemplo",
+      "contentId": "conteudo-planejado-exemplo",
+      "status": "Consultivo",
+      "summary": "Peca coerente, com um ajuste de contraste recomendado.",
+      "findings": ["Aumentar o contraste do texto secundario."],
+      "model": "gemini-3.1-flash-lite"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "approval-uuid-example",
+      "clientId": "cliente-exemplo",
+      "contentId": "conteudo-planejado-exemplo",
+      "decision": "approved",
+      "comment": "",
+      "stage": "final",
+      "updatedAt": "2026-07-13T13:00:00.000Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "meta-conteudo-planejado-exemplo-2026-08-10",
+      "type": "meta_pending",
+      "status": "unread",
+      "clientId": "cliente-exemplo",
+      "plannedContentId": "conteudo-planejado-exemplo",
+      "title": "Agendamento pendente",
+      "message": "O conteudo chegou a data prevista sem agendamento no Meta.",
+      "responsibleEmail": "operador@example.invalid",
+      "publishDate": "2026-08-10",
+      "createdAt": "2026-08-10T11:00:00.000Z"
+    }
+  ],
+  "aiGateway": [
+    {
+      "id": "default",
+      "textGenerationProvider": "openai",
+      "textGenerationModel": "gpt-5-nano",
+      "reviewProvider": "openai",
+      "reviewModel": "gpt-5-nano",
+      "brandProvider": "gemini",
+      "brandModel": "gemini-3.1-flash-lite",
+      "visionProvider": "gemini",
+      "visionModel": "gemini-3.1-flash-lite",
+      "routingMode": "adaptive"
+    }
+  ],
+  "aiLogs": [
+    {
+      "id": "ai-log-uuid-example",
+      "task": "generation",
+      "clientId": "cliente-exemplo",
+      "provider": "openai",
+      "model": "gpt-5-nano",
+      "reason": "Configuracao padrao da tarefa no AI Gateway.",
+      "mode": "live",
+      "requestedBy": "operador@example.invalid",
+      "durationMs": 920,
+      "metadata": {"fitScore": 82, "routed": false},
+      "createdAt": "2026-07-13T12:30:00.000Z"
+    }
+  ],
+  "modelPerformance": [
+    {
+      "id": "performance-example",
+      "clientId": "cliente-exemplo",
+      "task": "generation",
+      "provider": "openai",
+      "model": "gpt-5-nano",
+      "avgFitScore": 82
+    }
+  ],
+  "mail": [
+    {
+      "id": "meta-conteudo-planejado-exemplo-2026-08-10",
+      "to": ["operador@example.invalid"],
+      "message": {
+        "subject": "[DG5] Agendamento pendente: Cliente Exemplo",
+        "text": "Atualize o status do item planejado no sistema."
+      }
+    }
+  ],
+  "reservedCollections": {
+    "onboardings": [],
+    "plans": [],
+    "feedbacks": [],
+    "learningCandidates": []
+  }
+}

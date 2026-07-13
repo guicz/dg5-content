@@ -1,6 +1,7 @@
 {
   "name": "dg5-content-intelligence-functions",
   "private": true,
+  "packageManager": "pnpm@11.7.0",
   "type": "module",
   "main": "index.js",
   "engines": {

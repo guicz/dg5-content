@@ -1,11 +1,17 @@
 $ErrorActionPreference = "Stop"
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$nodeBin = "C:\Users\Bruna\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin"
-$pnpm = "C:\Users\Bruna\.cache\codex-runtimes\codex-primary-runtime\dependencies\bin\fallback\pnpm.cmd"
+$pnpmCommand = Get-Command pnpm.cmd -ErrorAction SilentlyContinue
+if (-not $pnpmCommand) {
+  $pnpmCommand = Get-Command pnpm -ErrorAction SilentlyContinue
+}
+if (-not $pnpmCommand) {
+  throw "pnpm nao encontrado. Instale Node.js 22 e execute: corepack enable"
+}
+$pnpm = $pnpmCommand.Source
 
-$env:PATH = "$nodeBin;$env:PATH"
 Set-Location -LiteralPath $projectRoot
+$null = New-Item -ItemType Directory -Force -Path (Join-Path $projectRoot ".runtime")
 $transcript = Join-Path $projectRoot ".runtime\firebase-login.transcript.log"
 Start-Transcript -Path $transcript -Append | Out-Null
 

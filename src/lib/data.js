@@ -32,7 +32,7 @@ export function subscribeWorkspace(onChange, onError) {
       collection(db, name),
       (snapshot) => {
         const records = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
-        const clientOrder = (client) => client.sortOrder ?? (client.id === "sementes-do-sul" ? 1 : 99);
+        const clientOrder = (client) => client.sortOrder ?? 99;
         state[name] = name === "clients"
           ? records.sort((a, b) => clientOrder(a) - clientOrder(b) || a.name.localeCompare(b.name, "pt-BR"))
           : records;

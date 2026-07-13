@@ -2,6 +2,16 @@
 
 MVP interno da DG5 para organizar conhecimento de clientes, Brand Brain, planejamento editorial, produção textual, criativos manuais, revisão por IA e aprovação interna.
 
+## Handoff tecnico
+
+- [Guia completo de handoff](docs/HANDOFF-TECNICO.md)
+- [Inventario do que esta implementado, parcial ou ausente](docs/FUNCIONALIDADES.md)
+- [Modelo das colecoes Firestore](docs/MODELO-DE-DADOS.md)
+- [Amostra anonimizada dos dados](docs/amostra-dados-anonimizada.json)
+- [Mensagem pronta para encaminhar ao novo time](docs/MENSAGEM-DE-REPASSE.md)
+
+O repositorio nao contem chaves de IA nem valores de segredos. Arquivos locais de ambiente, logs, builds e dependencias estao ignorados pelo Git.
+
 ## Estado atual
 
 - Frontend React + Vite com layout responsivo e identidade DG5.
@@ -48,13 +58,20 @@ Valores aproximados, sem Firebase, Storage, e-mail, impostos ou variação de to
 
 ## Rodar localmente
 
-Pré-requisitos: Node 22, pnpm e Java 21. Nesta máquina, o Java 21 portátil está em `.tools/` e não altera a instalação do Windows.
+Pre-requisitos: Node.js 22, pnpm via Corepack e Java 21 para os emuladores.
 
 ```powershell
-cd C:\Users\Bruna\Documents\Codex\2026-07-09\le\work\dg5-content-intelligence
-pnpm install
-.\scripts\start-local.ps1
+git clone https://github.com/guicz/dg5-content.git
+cd dg5-content
+corepack enable
+pnpm install --frozen-lockfile
+Copy-Item .env.example .env.local
+pnpm test
+pnpm --filter dg5-content-intelligence-functions test
+pnpm build
 ```
+
+Para iniciar manualmente, execute `pnpm dev` e `pnpm emulators` em terminais separados. No Windows, `./scripts/start-local.ps1` inicia os dois processos.
 
 - Aplicação: `http://localhost:5177/`
 - Firebase Emulator UI: `http://localhost:4000/`
